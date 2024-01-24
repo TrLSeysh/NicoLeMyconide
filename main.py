@@ -1,6 +1,14 @@
+import time
+
+from src.Game import Game
+from src.Button import Button
+
 
 def main():
-    print("oui")
+    game = Game()
+
+    while True:
+        pass
 
 
 if __name__ == '__main__':
