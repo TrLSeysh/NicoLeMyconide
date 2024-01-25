@@ -1,14 +1,12 @@
-import time
-
-from src.Game import Game
-from src.Button import Button
-
+from src.game import Game
 
 def main():
     game = Game()
+    game.update_screen()
+    running = True
 
-    while True:
-        pass
+    while running:
+        running = game.check_event()
 
 
 if __name__ == '__main__':
