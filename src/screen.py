@@ -24,5 +24,8 @@ class Screen:
             for element in item:
                 item[element].display(self.screen)
 
-    def update_item(self, item):
-        item.update(self.screen)
+    def update_item(self, item, *args):
+        if not args:
+            item.update(self.screen)
+        else:
+            item.update(self.screen, args)
