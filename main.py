@@ -1,4 +1,6 @@
 from src.game import Game
+import pygame
+
 
 def main():
     game = Game()
@@ -7,6 +9,8 @@ def main():
 
     while running:
         running = game.check_event()
+
+    pygame.quit()
 
 
 if __name__ == '__main__':
