@@ -9,6 +9,7 @@ class Bar:
         self.fill_value = value
         self.special_state = 0
         self.bar_img = "assets/" + img + "0.png"
+        self.void_bar = pg.image.load('assets/void_bar.png').convert_alpha()
         self.color_bar = pg.image.load("assets/bar_lvl_" + str(round(value)) + ".png").convert_alpha()
 
     def display(self, screen):
@@ -29,14 +30,15 @@ class Bar:
 
     def update_values(self, value):
         self.fill_value = value
-        self.color_bar = pg.image.load("assets/bar_lvl_" + str(ceil(value)) + ".png").convert_alpha()
+        self.color_bar = pg.image.load("assets/bar_lvl_" + str(3 if ceil(value) > 3 else ceil(value)) + ".png").convert_alpha()
 
     def update_state(self, state, screen):
-        self.bar_img = self.bar_img.replace(str(self.special_state)+'.png', str(state)+'.png')
+        self.bar_img = self.bar_img.replace(str(self.special_state)+'.png', str(state) + '.png')
         self.special_state = state
 
     def update_on_screen(self, screen):
         cropped_region = (1, 1, (self.fill_value / 3 * 120), 32)
 
+        screen.blit(self.void_bar, (self.coordinates[0] - 1, self.coordinates[1] - 1))
         screen.blit(self.color_bar, (self.coordinates[0], self.coordinates[1]), cropped_region)
         pg.display.flip()

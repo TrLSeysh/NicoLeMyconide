@@ -2,6 +2,7 @@ import pygame as pg
 from src.button import Button
 from src.screen import Screen
 from src.bars import Bar
+from src.nico import Nico
 
 
 class Game:
@@ -9,6 +10,12 @@ class Game:
         self.game_screen = None
         self.current_screen = 'home_screen'
         self.window = Screen()
+        self.nico = None
+        self.is_game_running = False
+
+        self.clock = pg.time.Clock()
+        self.fps = 60
+        self.time_elapsed = 0
 
         self.buttons = {
             'home_screen': {
@@ -115,11 +122,25 @@ class Game:
         return True
 
     def start_game(self):
+        self.nico = Nico(3, 3, 3, 3, False, 'happy')
+        self.is_game_running = True
+
         self.current_screen = 'main_screen'
         self.update_screen()
 
     def pause_game(self):
-        pass
+        self.is_game_running = not self.is_game_running
+
+    def running_game(self):
+        dt = self.clock.tick(self.fps)
+        self.time_elapsed += dt
+
+        if self.time_elapsed >= 1000:
+            self.nico.live()
+            self.nico.emotion = self.nico.feelEmotion()
+            if self.current_screen == 'main_screen':
+                self.window.update_item(self.bars["energy_bar"], self.nico.energy, -1)
+            self.time_elapsed = 0
 
     def check_event(self):
         value = True
@@ -139,4 +160,6 @@ class Game:
 
                     value = True
 
+        if self.is_game_running:
+            self.running_game()
         return value

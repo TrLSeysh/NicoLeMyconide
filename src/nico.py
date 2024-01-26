@@ -1,7 +1,6 @@
 import pygame
-from button import Button
+from src.button import Button
 import sys
-#import game
 
 class Nico():
     def __init__(self, energy, hunger, hygiene, social, isAsleep, emotion):
@@ -26,23 +25,23 @@ class Nico():
         
         # get tired
         coef = 2 if self.isAsleep else -1
-        self.energy += coef * 0.3 # modify number to lower number to slow down pace of each need
+        self.energy += coef * 0.03 # modify number to lower number to slow down pace of each need
         
         # if asleep, decreasing of needs slows down
         # get hungry
         coef = 0.5 if self.isAsleep else 1
         if self.hunger > 0:
-            self.hunger -= coef * 0.5
+            self.hunger -= coef * 0.05
 
         # get dirty
         coef = 0.5 if self.isAsleep else 1
         if self.hygiene > 0:
-            self.hygiene -= coef * 0.1
+            self.hygiene -= coef * 0.01
 
         # want to play (coming feature)
         coef = 0.25 if self.isAsleep else 1
         if self.social > 0:
-            self.social -= coef * 0.3
+            self.social -= coef * 0.03
 
     def feelEmotion(self):
         """
