@@ -4,13 +4,15 @@ import sys
 #import game
 
 class Nico():
-    def __init__(self, energy, hunger, hygiene, social, isAsleep, emotion):
+    def __init__(self, energy, hunger, hygiene, social, isAsleep, emotion, img0, img1):
         self.energy = energy
         self.hunger = hunger
         self.hygiene = hygiene
         self.social = social
         self.isAsleep = isAsleep
         self.emotion = emotion
+        self.img0 = "assets/nico_"+self.emotion+"0.png"
+        self.img1 = "assets/nico_"+self.emotion+"1.png"
 
     def live(self):
         """
@@ -102,7 +104,7 @@ class Nico():
 def main():
     pygame.init()
 
-    nico = Nico(3,3,3,3,False,'happy')
+    nico = Nico(3,3,3,3,False,'happy','happy','happy')
 
     clock = pygame.time.Clock()
     fps = 60
@@ -117,6 +119,8 @@ def main():
     surf = pygame.Surface((200, 150)) 
     surf.fill((255,255,255)) # white rectangle
     font = pygame.font.Font(None, 36)
+
+    image0 = pygame.image.load(nico.img0)
 
     # button creation
 
@@ -154,6 +158,7 @@ def main():
         screen.blit(text_social, (0, 75))
         screen.blit(text_sleep, (0, 100))
         screen.blit(text_emotion, (0, 125))
+        screen.blit(image0, (150,150))
         pygame.display.flip()
 
     # Quitter Pygame
