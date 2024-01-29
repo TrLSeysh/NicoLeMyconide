@@ -68,12 +68,15 @@ class Nico():
         # check hunger (if hunger >= 3, will not eat)
         if self.emotion == 'sad' or self.hunger >= 3 or self.isAsleep:
             print("Nico doesn't / can't want to eat right now.")
+            return True
         elif self.hunger+food > 3:
             self.hunger += food
             print("The food was delicious... But Nico ate a bit too much.")
+            return False
         else :
             self.hunger += food
             print("Nico enjoyed his little snack !")
+            return False
 
     def clean(self):
         """
@@ -82,20 +85,27 @@ class Nico():
         # check emotion (if angry, will not clean)
         if self.emotion == 'angry' or self.isAsleep:
             print("Nico doesn't want to take a bath right now.")
+            return True
         else:
             self.hygiene = 3
             print("Nico is all-clean now !")
+            return False
 
-    def play(self):
+    def pet(self):
         """
-        play (add social to the bar punctually)
+        pet (add social to the bar punctually)
         """
-        # check emotion (if angry, will not play)
+        # check emotion (if angry, will not want to be petted)
         if self.emotion == 'angry' or self.isAsleep:
-            print("Nico doesn't feel like playing right now.")
+            self.social -= 0.2
+            if self.isAsleep:
+                self.isAsleep = False
+            print("Nico doesn't want to be petted right now.")
+            return True
         else:
             self.social += 1
             print("You petted Nico. He liked it !")
+            return False
 
 
 def main():
