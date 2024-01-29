@@ -19,25 +19,29 @@ class Game:
 
         self.buttons = {
             'home_screen': {
-                'start_button': Button([196, 140], [96, 48], 'main_button'),
-                'quit_button': Button([196, 200], [96, 48], 'main_button'),
+                'start_button': Button([99, 160], [96, 48], 'start_button'),
+                'load_button': Button([196, 160], [96, 48], 'load_button'),
+                'quit_button': Button([293, 160], [96, 48], 'quit_button'),
             },
             'main_screen': {
                 'menu_button': Button([447, 1], [32, 32], 'menu_button'),
                 'pause_button': Button([414, 1], [32, 32], 'pause_button'),
             },
             'menu_screen': {
-                'feed_button': Button([148, 87], [96, 48], 'main_button'),
-                'sleep_button': Button([245, 87], [96, 48], 'main_button'),
-                'hygiene_button': Button([148, 136], [96, 48], 'main_button'),
-                'social_button': Button([245, 136], [96, 48], 'main_button'),
-                'home_button': Button([447, 237], [32, 32], 'pause_button'),
+                'feed_button': Button([148, 87], [96, 48], 'feed_button'),
+                'sleep_button': Button([245, 87], [96, 48], 'sleep_button'),
+                'hygiene_button': Button([148, 136], [96, 48], 'hygiene_button'),
+                'social_button': Button([245, 136], [96, 48], 'social_button'),
+                'home_button': Button([447, 237], [32, 32], 'home_button'),
                 'close_button': Button([447, 1], [96, 48], 'menu_button'),
             }
         }
 
         self.bars = {
-            'energy_bar': Bar([1, 1], [80, 20], 'energy_bar', 2.8),
+            'energy_bar': Bar([1, 1], [120, 20], 'energy_bar', 3),
+            'hunger_bar': Bar([122, 1], [120, 20], 'hunger_bar', 3),
+            'hygiene_bar': Bar([1, 32], [120, 20], 'hygiene_bar', 3),
+            'social_bar': Bar([122, 32], [120, 20], 'social_bar', 3),
         }
 
     def update_screen(self):
@@ -140,6 +144,9 @@ class Game:
             self.nico.emotion = self.nico.feelEmotion()
             if self.current_screen == 'main_screen':
                 self.window.update_item(self.bars["energy_bar"], self.nico.energy, -1)
+                self.window.update_item(self.bars["hunger_bar"], self.nico.hunger, -1)
+                self.window.update_item(self.bars["hygiene_bar"], self.nico.hygiene, -1)
+                self.window.update_item(self.bars["social_bar"], self.nico.social, -1)
             self.time_elapsed = 0
 
     def check_event(self):

@@ -18,7 +18,7 @@ class Screen:
         self.screen = pg.display.set_mode((self.current_w, self.current_h))
 
     def display_screen(self, items):
-        self.screen.fill("black")
+        self.screen.fill("#181425FF")
 
         for item in items:
             for element in item:

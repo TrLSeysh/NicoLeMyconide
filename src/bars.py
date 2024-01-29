@@ -30,7 +30,7 @@ class Bar:
 
     def update_values(self, value):
         self.fill_value = value
-        self.color_bar = pg.image.load("assets/bar_lvl_" + str(3 if ceil(value) > 3 else ceil(value)) + ".png").convert_alpha()
+        self.color_bar = pg.image.load("assets/bar_lvl_" + str(3 if ceil(value) > 3 else (1 if ceil(value) < 1 else ceil(value))) + ".png").convert_alpha()
 
     def update_state(self, state, screen):
         self.bar_img = self.bar_img.replace(str(self.special_state)+'.png', str(state) + '.png')
