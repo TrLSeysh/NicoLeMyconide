@@ -159,7 +159,7 @@ def main():
         screen.fill((255, 255, 255))  # Efface l'écran
         
         # animations
-        if time_elapsed >= 250:
+        if time_elapsed >= 500:
             frame_surface = pygame.image.load(nico.current_frames[1])
         else:
             frame_surface = pygame.image.load(nico.current_frames[0])
