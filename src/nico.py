@@ -1,7 +1,6 @@
 import pygame
-from button import Button
+from src.button import Button
 import sys
-#import game
 
 class Nico():
     def __init__(self, energy, hunger, hygiene, social, isAsleep, emotion):
@@ -26,23 +25,23 @@ class Nico():
         
         # get tired
         coef = 2 if self.isAsleep else -1
-        self.energy += coef * 0.3 # modify number to lower number to slow down pace of each need
+        self.energy += coef * 0.03 # modify number to lower number to slow down pace of each need
         
         # if asleep, decreasing of needs slows down
         # get hungry
         coef = 0.5 if self.isAsleep else 1
         if self.hunger > 0:
-            self.hunger -= coef * 0.5
+            self.hunger -= coef * 0.05
 
         # get dirty
         coef = 0.5 if self.isAsleep else 1
         if self.hygiene > 0:
-            self.hygiene -= coef * 0.1
+            self.hygiene -= coef * 0.01
 
         # want to play (coming feature)
         coef = 0.25 if self.isAsleep else 1
         if self.social > 0:
-            self.social -= coef * 0.3
+            self.social -= coef * 0.03
 
     def feelEmotion(self):
         """
@@ -69,12 +68,15 @@ class Nico():
         # check hunger (if hunger >= 3, will not eat)
         if self.emotion == 'sad' or self.hunger >= 3 or self.isAsleep:
             print("Nico doesn't / can't want to eat right now.")
+            return True
         elif self.hunger+food > 3:
             self.hunger += food
             print("The food was delicious... But Nico ate a bit too much.")
+            return False
         else :
             self.hunger += food
             print("Nico enjoyed his little snack !")
+            return False
 
     def clean(self):
         """
@@ -83,20 +85,27 @@ class Nico():
         # check emotion (if angry, will not clean)
         if self.emotion == 'angry' or self.isAsleep:
             print("Nico doesn't want to take a bath right now.")
+            return True
         else:
             self.hygiene = 3
             print("Nico is all-clean now !")
+            return False
 
-    def play(self):
+    def pet(self):
         """
-        play (add social to the bar punctually)
+        pet (add social to the bar punctually)
         """
-        # check emotion (if angry, will not play)
+        # check emotion (if angry, will not want to be petted)
         if self.emotion == 'angry' or self.isAsleep:
-            print("Nico doesn't feel like playing right now.")
+            self.social -= 0.2
+            if self.isAsleep:
+                self.isAsleep = False
+            print("Nico doesn't want to be petted right now.")
+            return True
         else:
             self.social += 1
             print("You petted Nico. He liked it !")
+            return False
 
 
 def main():
