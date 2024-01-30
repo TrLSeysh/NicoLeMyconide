@@ -2,16 +2,16 @@ import pygame
 from src.button import Button
 import sys
 
-class Nico(pygame.sprite.Sprite):
-    def __init__(self, energy, hunger, hygiene, social, isAsleep, emotion):
+
+class Nico():
+    def __init__(self, energy, hunger, hygiene, social, isAsleep, emotion, coordinates):
         self.energy = energy
         self.hunger = hunger
         self.hygiene = hygiene
         self.social = social
         self.isAsleep = isAsleep
         self.emotion = emotion
-        # self.img0 = "assets/nico_"+self.emotion+"0.png"
-        # self.img1 = "assets/nico_"+self.emotion+"1.png"
+        self.coordinates = coordinates
         
         # initialize current emotion's frames
         for _ in range(2):
@@ -131,11 +131,17 @@ class Nico(pygame.sprite.Sprite):
             print("You petted Nico. He liked it !")
             return False
 
+    def update(self, screen, frame):
+        frame_surface = pygame.image.load(self.current_frames[frame[0]])
+
+        pygame.draw.rect(screen, "#181425FF", (self.coordinates, [128, 128]))
+        screen.blit(frame_surface, self.coordinates)
+        pygame.display.flip()
 
 def main():
     pygame.init()
 
-    nico = Nico(3,3,3,3,False,'happy')
+    nico = Nico(3,3,3,3,False,'happy',  [150, 150])
 
     clock = pygame.time.Clock()
     fps = 60

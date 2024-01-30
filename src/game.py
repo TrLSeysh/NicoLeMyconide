@@ -8,6 +8,11 @@ from src.food import Food
 
 class Game:
     def __init__(self):
+        """
+
+        Game function manage all events and element on the screen. It also updates Nico state
+
+        """
         self.game_screen = None
         self.current_screen = 'home_screen'
         self.window = Screen()
@@ -48,6 +53,11 @@ class Game:
         self.dynamic = {}
 
     def update_screen(self):
+        """
+
+        Update the displayed screen with specific elements
+
+        """
         if self.current_screen == 'home_screen':
             self.window.display_screen([
                 self.buttons[self.current_screen]
@@ -63,7 +73,14 @@ class Game:
         elif self.current_screen == 'menu_screen':
             self.window.display_screen([self.buttons[self.current_screen]])
 
+        pg.display.update()
+
     def is_button_pressed(self, current_btn):
+        """
+
+        Check if a button is pressed and update its animation state
+        :param current_btn: the buttons on the screen
+        """
         m_pos = pg.mouse.get_pos()
 
         for button in current_btn:
@@ -75,6 +92,12 @@ class Game:
         return None
 
     def is_element_clicked(self, elements, *args):
+        """
+
+        Check if an element like food or anything else other than a button is clicked and update its displayed state
+        :param elements: the elements on the screen
+        :param args: if an element required special variable
+        """
         m_pos = pg.mouse.get_pos()
         for name in elements:
             if elements[name].coordinates[0] < m_pos[0] < elements[name].coordinates[0] + elements[name].size[0]:
@@ -88,6 +111,12 @@ class Game:
         return None
 
     def has_button_been_pressed(self, current_btn):
+        """
+
+        check if a button has been pressed to execute action later
+        :param current_btn: buttons on the screen
+        :return: the pressed button
+        """
         for button in current_btn:
             if current_btn[button].is_pressed:
                 self.window.update_item(current_btn[button])
@@ -96,6 +125,11 @@ class Game:
         return None
 
     def home_screen_events(self, ev):
+        """
+        Check events on the home screen (with main menu)
+        :param ev: registered event
+        :return: return True if the game must continue False if it must stop
+        """
         if ev.type == pg.MOUSEBUTTONDOWN:
             self.is_button_pressed(self.buttons['home_screen'])
 
@@ -110,6 +144,11 @@ class Game:
         return True
 
     def main_screen_events(self, ev):
+        """
+        Check events on the main screen (the game)
+        :param ev: registered event
+        :return: only return True to continue the game
+        """
         if ev.type == pg.MOUSEBUTTONDOWN:
             pressed_button = self.is_button_pressed(self.buttons['main_screen'])
 
@@ -122,8 +161,9 @@ class Game:
                     self.current_screen = 'menu_screen'
                     self.update_screen()
                 elif button == 'pause_button':
-                    self.window.update_item(self.bars["energy_bar"], None, 1)
+                    self.pause_game()
                     self.update_screen()
+                    self.window.update_item(self.nico, 1)
                 elif button == 'stop_button':
                     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
                     del self.buttons['main_screen']['stop_button']
@@ -141,6 +181,11 @@ class Game:
         return True
 
     def menu_screen_events(self, ev):
+        """
+        Check events on the menu screen (select action)
+        :param ev: registered event
+        :return: only return True to continue the game
+        """
         if ev.type == pg.MOUSEBUTTONDOWN:
             self.is_button_pressed(self.buttons['menu_screen'])
 
@@ -173,18 +218,40 @@ class Game:
         return True
 
     def start_game(self):
-        self.nico = Nico(0, 3, 3, 3, False, 'happy')
+        """
+
+        Initialized game variables and Nico states
+
+        """
+        self.nico = Nico(3, 3, 3, 3, False, 'happy', [100, 150])
         self.is_game_running = True
 
         self.current_screen = 'main_screen'
         self.update_screen()
 
     def pause_game(self):
+        """
+
+        Pause changements in game state
+
+        """
         self.is_game_running = not self.is_game_running
 
     def running_game(self):
+        """
+
+        Modify variables for Nico and displays with a clock ticks. Also change Nico's animation frame
+
+        """
         dt = self.clock.tick(self.fps)
         self.time_elapsed += dt
+
+        # animations
+        if self.current_screen == 'main_screen':
+            if self.time_elapsed >= 500:
+                self.window.update_item(self.nico, 1)
+            else:
+                self.window.update_item(self.nico, 0)
 
         if self.time_elapsed >= 1000:
             self.nico.live()
@@ -201,8 +268,16 @@ class Game:
                 self.window.update_item(self.bars["social_bar"], self.nico.social, -1)
             self.time_elapsed = 0
 
+
     def check_event(self):
+        """
+
+        Main function to check events on screen.
+
+        """
         value = True
+        if self.is_game_running:
+            self.running_game()
 
         for ev in pg.event.get():
             if ev.type == pg.QUIT:
@@ -219,6 +294,4 @@ class Game:
 
                     value = True
 
-        if self.is_game_running:
-            self.running_game()
         return value
