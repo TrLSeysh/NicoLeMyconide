@@ -17,7 +17,7 @@ class Food:
             screen.blit(self.closed_img, self.coordinates)
             pg.display.flip()
         elif self.state == 1:
-            screen.blit(self.opened_img, self.coordinates)
+            screen.blit(self.opened_img, (self.coordinates[0] + 16, self.coordinates[1] + 16))
             pg.display.flip()
 
     def update(self, screen):

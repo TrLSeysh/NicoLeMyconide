@@ -155,7 +155,7 @@ class Game:
                     self.current_screen = 'main_screen'
                     self.update_screen()
                 elif button == 'feed_button':
-                    self.dynamic['food'] = Food([360, 120], [96, 96], "stop_button", 2.5, 2)
+                    self.dynamic['food'] = Food([360, 120], [96, 96], "baby_bottle", 2.5, 2)
                     self.current_screen = 'main_screen'
                     self.update_screen()
                 elif button == 'sleep_button':
