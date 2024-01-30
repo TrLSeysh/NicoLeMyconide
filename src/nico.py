@@ -2,16 +2,17 @@ import pygame
 from src.button import Button
 import sys
 
-class Nico(pygame.sprite.Sprite):
-    def __init__(self, energy, hunger, hygiene, social, isAsleep, emotion):
+
+class Nico():
+    def __init__(self, energy, hunger, hygiene, social, isAsleep, emotion, coordinates, size):
         self.energy = energy
         self.hunger = hunger
         self.hygiene = hygiene
         self.social = social
         self.isAsleep = isAsleep
         self.emotion = emotion
-        # self.img0 = "assets/nico_"+self.emotion+"0.png"
-        # self.img1 = "assets/nico_"+self.emotion+"1.png"
+        self.coordinates = coordinates
+        self.size = size
         
         # initialize current emotion's frames
         for _ in range(2):
@@ -26,7 +27,7 @@ class Nico(pygame.sprite.Sprite):
         # respective thresholds are 0, 1, 2, 3. 0 being the lowest, 3 being the highest.
 
         # fall asleep / wake up (add energy to the bar over time)
-        if (self.energy < 0.3 and not self.isAsleep) or (self.energy > 2.7 and self.isAsleep):
+        if (self.energy < 0.3 and not self.isAsleep) or (self.energy > 2.9 and self.isAsleep):
             self.isAsleep = not self.isAsleep
         
         # get tired
@@ -121,21 +122,26 @@ class Nico(pygame.sprite.Sprite):
         """
         # check emotion (if angry, will not want to be petted)
         if self.emotion == 'angry' or self.isAsleep:
-            self.social -= 0.2
+            self.social = self.social - 1.0 if self.social - 1.0 > 0 else 0
             if self.isAsleep:
                 self.isAsleep = False
             print("Nico doesn't want to be petted right now.")
             return True
         else:
-            self.social += 1
-            print("You petted Nico. He liked it !")
+            self.social = self.social + 0.05 if self.social + 0.05 < 3 else 3
             return False
 
+    def update(self, screen, frame):
+        frame_surface = pygame.image.load(self.current_frames[frame[0]])
+
+        pygame.draw.rect(screen, "#181425FF", (self.coordinates, self.size))
+        screen.blit(frame_surface, self.coordinates)
+        pygame.display.flip()
 
 def main():
     pygame.init()
 
-    nico = Nico(3,3,3,3,False,'happy')
+    nico = Nico(3,3,3,3,False,'happy',  [150, 150])
 
     clock = pygame.time.Clock()
     fps = 60

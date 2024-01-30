@@ -18,15 +18,20 @@ class Screen:
         self.screen = pg.display.set_mode((self.current_w, self.current_h))
 
     def display_screen(self, items):
-        self.screen.fill("#181425FF")
-
         for item in items:
             for element in item:
                 item[element].display(self.screen)
-                print(f"displayed : {element}")
 
     def update_item(self, item, *args):
         if not args:
             item.update(self.screen)
         else:
             item.update(self.screen, args)
+
+    def display_anim(self, coordinates, size, state, img):
+        pg.draw.rect(self.screen, "#181425FF", (coordinates, size))
+        if state:
+            anim_img = pg.image.load("assets/" + img + str(state) + ".png").convert_alpha()
+            self.screen.blit(anim_img, coordinates)
+
+        pg.display.update()
