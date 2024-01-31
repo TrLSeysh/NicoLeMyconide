@@ -331,7 +331,6 @@ class Game:
                 self.window.update_item(self.bars["social_bar"], self.nico.social, -1)
             self.time_elapsed = 0
 
-
     def check_event(self):
         """
 
