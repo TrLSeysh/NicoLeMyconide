@@ -134,7 +134,6 @@ class Nico():
     def update(self, screen, frame):
         frame_surface = pygame.image.load(self.current_frames[frame[0]])
 
-        pygame.draw.rect(screen, "#181425FF", (self.coordinates, self.size))
         screen.blit(frame_surface, self.coordinates)
         pygame.display.flip()
 

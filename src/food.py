@@ -23,8 +23,6 @@ class Food:
     def update(self, screen):
         if self.state == 2:
             self.state -= 1
-            pg.draw.rect(screen, "#181425FF", (self.coordinates, self.size))
             self.display(screen)
         elif self.state == 1:
             self.state -= 1
-            pg.draw.rect(screen, "#181425FF", (self.coordinates, self.size))

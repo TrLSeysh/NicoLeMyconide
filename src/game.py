@@ -19,7 +19,6 @@ class Game:
         self.window = Screen()
         self.nico = None
         self.is_game_running = False
-        self.menu_background = pg.image.load("assets/menu_background.png")
         self.current_action = {'type': 'normal', 'state': 0}
         self.old_mouse_pos = [0,0]
         self.petted_count = 0
@@ -31,9 +30,9 @@ class Game:
 
         self.buttons = {
             'home_screen': {
-                'start_button': Button([99, 170], [96, 48], 'start_button'),
-                'load_button': Button([196, 170], [96, 48], 'load_button'),
-                'quit_button': Button([293, 170], [96, 48], 'quit_button'),
+                'start_button': Button([86, 170], [96, 48], 'start_button'),
+                'load_button': Button([183, 170], [96, 48], 'load_button'),
+                'quit_button': Button([280, 170], [96, 48], 'quit_button'),
             },
             'main_screen': {
                 'menu_button': Button([447, 1], [32, 32], 'menu_button'),
@@ -67,12 +66,13 @@ class Game:
         self.window.screen.fill("#181425FF")
 
         if self.current_screen == 'home_screen':
-            self.window.screen.blit(self.menu_background, (0, 0))
+            self.window.display_background('home')
             self.window.display_screen([
                 self.buttons[self.current_screen]
             ])
 
         elif self.current_screen == 'main_screen':
+            self.window.display_background('main')
             self.window.display_screen([
                 self.buttons[self.current_screen],
                 self.bars,
@@ -80,7 +80,10 @@ class Game:
             ])
 
         elif self.current_screen == 'menu_screen':
-            self.window.display_screen([self.buttons[self.current_screen]])
+            self.window.display_background('menu')
+            self.window.display_screen([
+                self.buttons[self.current_screen
+            ]])
 
         pg.display.update()
 
@@ -176,14 +179,14 @@ class Game:
 
             if self.mouse_on_nico(m_pos):
                 if sqrt((self.old_mouse_pos[0] - m_pos[0]) ** 2 + (self.old_mouse_pos[1] - m_pos[1]) ** 2) > 20:
-                    self.nico.pet()
-                    self.petted_count += 1
+                    if self.nico.pet():
+                        self.petted_count += 1
 
-                    if not self.petted_count % 5:
-                        self.current_action['state'] = self.current_action['state'] + 1 if self.current_action['state'] + 1 < 4 else 0
+                        if not self.petted_count % 5:
+                            self.current_action['state'] = self.current_action['state'] + 1 if self.current_action['state'] + 1 < 4 else 0
 
-                    self.window.display_anim((self.nico.coordinates[0] + self.nico.size[0] + 10, self.nico.coordinates[1] - 30),(42, 74), self.current_action['state'], "hearts")
-                    self.old_mouse_pos = m_pos
+                        self.window.display_anim((self.nico.coordinates[0] + self.nico.size[0] + 10, self.nico.coordinates[1] - 30),(42, 74), self.current_action['state'], "hearts")
+                        self.old_mouse_pos = m_pos
             else:
                 self.window.display_anim((self.nico.coordinates[0] + self.nico.size[0] + 10, self.nico.coordinates[1] - 30), (42, 74),0, "hearts")
 
@@ -204,11 +207,11 @@ class Game:
                     self.window.update_item(self.nico, 1)
                 elif button == 'stop_button':
                     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
+                    self.window.remove_element_from_screen(self.buttons['main_screen']['stop_button'].coordinates, self.buttons['main_screen']['stop_button'].size)
                     del self.buttons['main_screen']['stop_button']
                     self.current_action['type'] = 'normal'
                     self.current_action['state'] = 0
                     self.petted_count = 0
-                    self.update_screen()
 
             elif element_name:
                 if element_name == 'food':
@@ -241,7 +244,8 @@ class Game:
                     self.current_screen = 'main_screen'
                     self.update_screen()
                 elif button == 'feed_button':
-                    self.dynamic['food'] = Food([360, 120], [96, 96], "baby_bottle", 2.5, 2)
+                    # Create the food element to give to Nico
+                    self.dynamic['food'] = Food([80, 120], [96, 96], "baby_bottle", 2.5, 2)
                     self.current_screen = 'main_screen'
                     self.update_screen()
                 elif button == 'sleep_button':
@@ -267,7 +271,9 @@ class Game:
         Initialized game variables and Nico states
 
         """
-        self.nico = Nico(3, 3, 3, 0.5, False, 'happy', [100, 150], [128, 128])
+
+        # Create nico for the game
+        self.nico = Nico(3, 3, 3, 3, False, 'happy', [180, 120], [128, 128])
         self.is_game_running = True
 
         self.current_screen = 'main_screen'
