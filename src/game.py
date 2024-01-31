@@ -179,7 +179,7 @@ class Game:
 
             if self.mouse_on_nico(m_pos):
                 if sqrt((self.old_mouse_pos[0] - m_pos[0]) ** 2 + (self.old_mouse_pos[1] - m_pos[1]) ** 2) > 20:
-                    if self.nico.pet():
+                    if not self.nico.pet():
                         self.petted_count += 1
 
                         if not self.petted_count % 5:
