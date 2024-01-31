@@ -36,7 +36,6 @@ class Bar:
     def update_on_screen(self, screen):
         cropped_region = (1, 1, (self.fill_value / 3 * 120), 32)
 
-        pg.draw.rect(screen, "#181425FF", (self.coordinates, self.size))
         screen.blit(self.color_bar, self.coordinates, cropped_region)
 
         bar = pg.image.load(self.bar_img).convert_alpha()
