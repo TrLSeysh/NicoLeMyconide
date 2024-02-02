@@ -1,3 +1,8 @@
+"""
+
+Screen is parameters and functions linked
+
+"""
 import pygame as pg
 
 
@@ -24,13 +29,13 @@ class Screen:
         self.menu_background = pg.image.load("assets/menu_background.png")
 
     def display_background(self, name):
-        if name == 'home':
+        if name == "home":
             self.screen.blit(self.home_background, (0, 0))
             self.current_background = self.home_background
-        elif name == 'main':
+        elif name == "main":
             self.screen.blit(self.main_background, (0, 0))
             self.current_background = self.main_background
-        elif name == 'menu':
+        elif name == "menu":
             self.screen.blit(self.menu_background, (0, 0))
             self.current_background = self.menu_background
 

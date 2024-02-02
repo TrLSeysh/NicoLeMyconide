@@ -1,9 +1,8 @@
 import pygame
-from src.button import Button
 import sys
 
 
-class Nico():
+class Nico:
     def __init__(self, energy, hunger, hygiene, social, isAsleep, emotion, coordinates, size):
         self.energy = energy
         self.hunger = hunger
@@ -13,10 +12,13 @@ class Nico():
         self.emotion = emotion
         self.coordinates = coordinates
         self.size = size
-        
+
         # initialize current emotion's frames
         for _ in range(2):
-            self.current_frames = ["assets/nico_"+self.emotion+str(_)+".png","assets/nico_"+self.emotion+str(_)+".png"]
+            self.current_frames = [
+                "assets/nico_" + self.emotion + str(_) + ".png",
+                "assets/nico_" + self.emotion + str(_) + ".png",
+            ]
 
     def live(self):
         """
@@ -29,11 +31,11 @@ class Nico():
         # fall asleep / wake up (add energy to the bar over time)
         if (self.energy < 0.3 and not self.isAsleep) or (self.energy > 2.9 and self.isAsleep):
             self.isAsleep = not self.isAsleep
-        
+
         # get tired
         coef = 2 if self.isAsleep else -1
-        self.energy += coef * 0.03 # modify number to lower number to slow down pace of each need
-        
+        self.energy += coef * 0.03  # modify number to lower number to slow down pace of each need
+
         # if asleep, decreasing of needs slows down
         # get hungry
         coef = 0.5 if self.isAsleep else 1
@@ -52,19 +54,18 @@ class Nico():
 
         # get all sprites animation
         frames = {}
-        lst_states = ['neutral', 'happy', 'angry', 'sad', 'sleep']
+        lst_states = ["neutral", "happy", "angry", "sad", "sleep"]
         for state in lst_states:
             state_frame = []
             for _ in range(2):
-                state_frame.append("assets/nico_"+state+str(_)+".png")
-            frames[state] = state_frame        
+                state_frame.append("assets/nico_" + state + str(_) + ".png")
+            frames[state] = state_frame
 
         # update image depending on emotion
         if self.isAsleep:
-            self.current_frames = frames['sleep']
+            self.current_frames = frames["sleep"]
         else:
             self.current_frames = frames[self.emotion]
-
 
     def feelEmotion(self):
         """
@@ -72,33 +73,33 @@ class Nico():
         """
         # if hunger or energy =< 1, get angry
         if self.energy <= 1 or self.hunger <= 1:
-            emotion = 'angry'
+            emotion = "angry"
 
         # if social or hygiene =<1 , get sad
-        elif self.hygiene <=1 or self.social <= 1:
-            emotion = 'sad'
+        elif self.hygiene <= 1 or self.social <= 1:
+            emotion = "sad"
 
         # get happy if all needs are met ^_^
-        elif self.energy >=2 and self.hunger >=2 and self.hygiene >= 2 and self.social >=2:
-            emotion = 'happy'
+        elif self.energy >= 2 and self.hunger >= 2 and self.hygiene >= 2 and self.social >= 2:
+            emotion = "happy"
         else:
-            emotion = 'neutral'
+            emotion = "neutral"
         return emotion
-    
+
     def feed(self, food):
         """
         eat food (add hunger to the bar punctually)
         """
         # check emotion (if sad, will not eat)
         # check hunger (if hunger >= 3, will not eat)
-        if self.emotion == 'sad' or self.hunger >= 3 or self.isAsleep:
+        if self.emotion == "sad" or self.hunger >= 3 or self.isAsleep:
             print("Nico doesn't / can't want to eat right now.")
             return True
-        elif self.hunger+food > 3:
+        elif self.hunger + food > 3:
             self.hunger += food
             print("The food was delicious... But Nico ate a bit too much.")
             return False
-        else :
+        else:
             self.hunger += food
             print("Nico enjoyed his little snack !")
             return False
@@ -108,7 +109,7 @@ class Nico():
         clean (add hygiene to the bar punctually)
         """
         # check emotion (if angry, will not clean)
-        if self.emotion == 'angry' or self.isAsleep:
+        if self.emotion == "angry" or self.isAsleep:
             print("Nico doesn't want to take a bath right now.")
             return True
         else:
@@ -121,7 +122,7 @@ class Nico():
         pet (add social to the bar punctually)
         """
         # check emotion (if angry, will not want to be petted)
-        if self.emotion == 'angry' or self.isAsleep:
+        if self.emotion == "angry" or self.isAsleep:
             self.social = self.social - 1.0 if self.social - 1.0 > 0 else 0
             if self.isAsleep:
                 self.isAsleep = False
@@ -131,16 +132,17 @@ class Nico():
             self.social = self.social + 0.05 if self.social + 0.05 < 3 else 3
             return False
 
-    def update(self, screen, frame):
+    def update(self, screen, frame) -> None:
         frame_surface = pygame.image.load(self.current_frames[frame[0]])
 
         screen.blit(frame_surface, self.coordinates)
         pygame.display.flip()
 
+
 def main():
     pygame.init()
 
-    nico = Nico(3,3,3,3,False,'happy',  [150, 150])
+    nico = Nico(3, 3, 3, 3, False, "happy", [150, 150])
 
     clock = pygame.time.Clock()
     fps = 60
@@ -149,9 +151,9 @@ def main():
     # testing window creation
     screen = pygame.display.set_mode((400, 300))
     pygame.display.set_caption("Nico's behaviour testing")
-    screen.fill((255,255,255))
-    surf = pygame.Surface((700, 700)) 
-    surf.fill((255,255,255)) # white rectangle
+    screen.fill((255, 255, 255))
+    surf = pygame.Surface((700, 700))
+    surf.fill((255, 255, 255))  # white rectangle
     font = pygame.font.Font(None, 36)
 
     # main loop
@@ -171,7 +173,7 @@ def main():
             time_elapsed = 0
 
         screen.fill((255, 255, 255))  # Efface l'écran
-        
+
         # animations
         if time_elapsed >= 500:
             frame_surface = pygame.image.load(nico.current_frames[1])
@@ -198,5 +200,5 @@ def main():
     pygame.quit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
