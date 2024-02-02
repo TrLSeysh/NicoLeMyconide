@@ -12,7 +12,7 @@ from src.item import Item
 class Bar(Item):
     """
 
-    Class is used for creating bar item, for loading or stats
+    Class is used for creating bar item, for loading screen or stats
 
     :param coordinates: location on the screen of the bar item
     :param size: the size of bar item
@@ -20,7 +20,7 @@ class Bar(Item):
     :param value: maximum value for the bar item
     """
 
-    def __init__(self, coordinates, size, img, value=3):
+    def __init__(self, coordinates: list, size: list, img: str, value: int = 3) -> None:
         super().__init__(coordinates, size)
 
         # fill_value is a float between 0 and 3 which
@@ -35,24 +35,24 @@ class Bar(Item):
             "assets/bar_lvl_" + str(round(value)) + ".png"
         ).convert_alpha()
 
-    def display(self, screen):
+    def display(self, screen: pg.display) -> None:
         """
 
         Display the bar item on the screen
 
-        :param screen: the pygame.screen element for the game
+        :param screen: the pygame.display element for the game
         """
         screen.blit(pg.image.load(self.bar_img).convert_alpha(), self.coordinates)
         pg.display.flip()
 
         self.update(screen, (self.fill_value, self.special_state))
 
-    def update(self, screen, args=(None, -1)):
+    def update(self, screen: pg.display, args: tuple = (None, -1)) -> None:
         """
 
         Update the bar item on the screen
 
-        :param screen: the pygame.screen element for the game
+        :param screen: the pygame.display element for the game
         :param args: used to update state,
         value or both (state change bar visual, value change visual pourcentage)
         """
@@ -62,7 +62,7 @@ class Bar(Item):
             self.update_state(args[1])
         self.update_on_screen(screen)
 
-    def update_values(self, value):
+    def update_values(self, value: float) -> None:
         """
 
         Update bar value to passed value
@@ -76,7 +76,7 @@ class Bar(Item):
             + ".png"
         ).convert_alpha()
 
-    def update_state(self, state):
+    def update_state(self, state: int) -> None:
         """
 
         Update bar state to passed state (e.g change lightning to moon for energy)
@@ -86,7 +86,7 @@ class Bar(Item):
         self.bar_img = self.bar_img.replace(str(self.special_state) + ".png", str(state) + ".png")
         self.special_state = state
 
-    def update_on_screen(self, screen):
+    def update_on_screen(self, screen: pg.display) -> None:
         """
 
         Update bar on the screen

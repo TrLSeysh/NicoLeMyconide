@@ -1,10 +1,11 @@
+from math import sqrt
 import pygame as pg
+from src.item import Item
 from src.button import Button
 from src.screen import Screen
 from src.bars import Bar
 from src.nico import Nico
 from src.food import Food
-from math import sqrt
 
 
 class Game:
@@ -14,8 +15,8 @@ class Game:
 
     """
 
-    def __init__(self):
-        # Screen parameters
+    def __init__(self) -> None:
+        # Screen variables
         self.current_screen = "home_screen"
         self.window = Screen()
 
@@ -65,7 +66,7 @@ class Game:
         # Used for dynamic elements like food (appear/disappear, selectable)
         self.dynamic = {}
 
-    def update_screen(self):
+    def update_screen(self) -> None:
         """
 
         Update the displayed screen with specific elements
@@ -87,7 +88,7 @@ class Game:
 
         pg.display.update()
 
-    def is_button_pressed(self, current_btn):
+    def is_button_pressed(self, current_btn: dict) -> Button or None:
         """
 
         Check if a button is pressed and update its animation state
@@ -112,7 +113,7 @@ class Game:
 
         return None
 
-    def is_element_clicked(self, elements, *args):
+    def is_element_clicked(self, elements: dict, *args) -> Item or None:
         """
 
         Check if an element like food or anything else other than a button is clicked and update its displayed state
@@ -141,7 +142,7 @@ class Game:
 
         return None
 
-    def has_button_been_pressed(self, current_btn):
+    def has_button_been_pressed(self, current_btn: dict) -> Button or None:
         """
 
         check if a button has been pressed to execute action later
@@ -155,7 +156,7 @@ class Game:
 
         return None
 
-    def mouse_on_nico(self, m_pos):
+    def mouse_on_nico(self, m_pos: tuple) -> bool:
         """
 
         Check if the mouse is on Nico's hitbox
@@ -167,7 +168,7 @@ class Game:
 
         return False
 
-    def home_screen_events(self, ev):
+    def home_screen_events(self, ev: pg.event) -> bool:
         """
         Check events on the home screen (with main menu)
         :param ev: registered event
@@ -186,7 +187,7 @@ class Game:
 
         return True
 
-    def main_screen_events(self, ev):
+    def main_screen_events(self, ev: pg.event) -> bool:
         """
         Check events on the main screen (the game)
         :param ev: registered event
@@ -220,11 +221,11 @@ class Game:
 
                         # Display hearts when Nico is petted
                         self.window.display_anim(
-                            (
+                            [
                                 self.nico.coordinates[0] + self.nico.size[0] + 10,
                                 self.nico.coordinates[1] - 30,
-                            ),
-                            (42, 74),
+                            ],
+                            [42, 74],
                             self.current_action["state"],
                             "hearts",
                         )
@@ -232,11 +233,11 @@ class Game:
             else:
                 # Remove hearts if mouse is outside Nico's hitbox
                 self.window.display_anim(
-                    (
+                    [
                         self.nico.coordinates[0] + self.nico.size[0] + 10,
                         self.nico.coordinates[1] - 30,
-                    ),
-                    (42, 74),
+                    ],
+                    [42, 74],
                     0,
                     "hearts",
                 )
@@ -257,7 +258,8 @@ class Game:
                     self.update_screen()
                     self.window.update_item(self.nico, 1)
                 elif button == "stop_button":
-                    # This button is only displayed when petting mode is active. When clicked it disappear and disable petting mode
+                    # This button is only displayed when petting mode is active.
+                    # When clicked it disappear and disable petting mode
                     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
                     self.window.remove_element_from_screen(
                         self.buttons["main_screen"]["stop_button"].coordinates,
@@ -280,7 +282,7 @@ class Game:
 
         return True
 
-    def menu_screen_events(self, ev):
+    def menu_screen_events(self, ev: pg.event) -> bool:
         """
         Check events on the menu screen (select action)
         :param ev: registered event
@@ -325,7 +327,7 @@ class Game:
 
         return True
 
-    def start_game(self):
+    def start_game(self) -> None:
         """
 
         Initialized game variables and Nico states
@@ -340,7 +342,7 @@ class Game:
         self.current_screen = "main_screen"
         self.update_screen()
 
-    def pause_game(self):
+    def pause_game(self) -> None:
         """
 
         Pause changes in game state
@@ -348,7 +350,7 @@ class Game:
         """
         self.is_game_running = not self.is_game_running
 
-    def running_game(self):
+    def running_game(self) -> None:
         """
 
         Modify variables for Nico and displays with a clock ticks. Also change Nico's animation frame
@@ -376,11 +378,11 @@ class Game:
                     self.sleeping_stage = 0
 
                 self.window.display_anim(
-                    (
+                    [
                         self.nico.coordinates[0] + self.nico.size[0] + 10,
                         self.nico.coordinates[1] - 30,
-                    ),
-                    (42, 80),
+                    ],
+                    [42, 80],
                     self.sleeping_stage,
                     "zzz",
                 )
@@ -395,11 +397,11 @@ class Game:
                 elif not self.nico.isAsleep and self.bars["energy_bar"].special_state == 1:
                     self.bars["energy_bar"].update_state(0)
                     self.window.display_anim(
-                        (
+                        [
                             self.nico.coordinates[0] + self.nico.size[0] + 10,
                             self.nico.coordinates[1] - 30,
-                        ),
-                        (42, 80),
+                        ],
+                        [42, 80],
                         0,
                         "zzz",
                     )
@@ -410,7 +412,7 @@ class Game:
                 self.window.update_item(self.bars["social_bar"], self.nico.social, -1)
             self.time_elapsed = 0
 
-    def check_event(self):
+    def check_event(self) -> bool:
         """
 
         Main function to check events on screen.

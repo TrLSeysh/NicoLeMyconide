@@ -10,7 +10,7 @@ from src.game import Game
 def main():
     """
 
-    Prenez bien soin de Nico, la petite pousse miconide
+    Take care of Nico, he is cute and must be protected
 
     """
     game = Game()
