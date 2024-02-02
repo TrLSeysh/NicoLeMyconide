@@ -1,11 +1,12 @@
 import pygame as pg
+from src.item import Item
 
 
-class Food:
+class Food(Item):
     def __init__(self, coordinates, size, name, food_regen=5, state=2):
+        super().__init__(coordinates, size)
+
         self.name = name
-        self.coordinates = coordinates
-        self.size = size
         self.state = state
         self.food_regen = food_regen
         self.closed_img = pg.image.load("assets/cardbox.png").convert_alpha()
@@ -20,7 +21,7 @@ class Food:
             screen.blit(self.opened_img, (self.coordinates[0] + 16, self.coordinates[1] + 16))
             pg.display.flip()
 
-    def update(self, screen):
+    def update(self, screen, args=None):
         if self.state == 2:
             self.state -= 1
             self.display(screen)

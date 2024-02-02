@@ -14,20 +14,28 @@ class Game:
         Game function manage all events and element on the screen. It also updates Nico state
 
         """
+
+        # Screen parameters
         self.game_screen = None
         self.current_screen = 'home_screen'
         self.window = Screen()
+
+        # Nico
         self.nico = None
+
+        # Game variables
         self.is_game_running = False
         self.current_action = {'type': 'normal', 'state': 0}
         self.old_mouse_pos = [0,0]
         self.petted_count = 0
         self.sleeping_stage = 0
 
+        # Time variables
         self.clock = pg.time.Clock()
         self.fps = 60
         self.time_elapsed = 0
 
+        # Screen Elements
         self.buttons = {
             'home_screen': {
                 'start_button': Button([86, 170], [96, 48], 'start_button'),
@@ -55,6 +63,7 @@ class Game:
             'social_bar': Bar([122, 32], [120, 32], 'social_bar', 3),
         }
 
+        # Used for dynamic elements like food (appear/disappear, selectable)
         self.dynamic = {}
 
     def update_screen(self):
@@ -95,6 +104,7 @@ class Game:
         """
         m_pos = pg.mouse.get_pos()
 
+        # Check for every button if mouse position is the same as one of them
         for button in current_btn:
             if current_btn[button].coordinates[0] < m_pos[0] < current_btn[button].coordinates[0] + current_btn[button].size[0]:
                 if current_btn[button].coordinates[1] < m_pos[1] < current_btn[button].coordinates[1] + current_btn[button].size[1]:
@@ -111,6 +121,8 @@ class Game:
         :param args: if an element required special variable
         """
         m_pos = pg.mouse.get_pos()
+
+        # Same as button but for dynamic elements
         for name in elements:
             if elements[name].coordinates[0] < m_pos[0] < elements[name].coordinates[0] + elements[name].size[0]:
                 if elements[name].coordinates[1] < m_pos[1] < elements[name].coordinates[1] + elements[name].size[1]:
@@ -179,7 +191,10 @@ class Game:
 
             if self.mouse_on_nico(m_pos):
                 if sqrt((self.old_mouse_pos[0] - m_pos[0]) ** 2 + (self.old_mouse_pos[1] - m_pos[1]) ** 2) > 20:
+
+                    # Check if Nico has been petted, if so : update social bar
                     if not self.nico.pet():
+                        self.window.update_item(self.bars["social_bar"], self.nico.social, -1)
                         self.petted_count += 1
 
                         if not self.petted_count % 5:
@@ -188,6 +203,7 @@ class Game:
                         self.window.display_anim((self.nico.coordinates[0] + self.nico.size[0] + 10, self.nico.coordinates[1] - 30),(42, 74), self.current_action['state'], "hearts")
                         self.old_mouse_pos = m_pos
             else:
+                # Display hearts when Nico is petted
                 self.window.display_anim((self.nico.coordinates[0] + self.nico.size[0] + 10, self.nico.coordinates[1] - 30), (42, 74),0, "hearts")
 
         if ev.type == pg.MOUSEBUTTONDOWN:
