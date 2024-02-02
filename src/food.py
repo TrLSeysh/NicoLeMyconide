@@ -3,6 +3,7 @@
 Food class used to manage food for Nico
 
 """
+
 import pygame as pg
 from src.item import Item
 
@@ -19,7 +20,9 @@ class Food(Item):
     :param state: Each food element has 3 states : 2 : In Cardbox / 1 : Opened / 0 : Eaten
     """
 
-    def __init__(self, coordinates, size, name, food_regen=5, state=2):
+    def __init__(
+        self, coordinates: list, size: list, name: str, food_regen: float = 5, state: int = 2
+    ) -> None:
         super().__init__(coordinates, size)
 
         self.name = name
@@ -32,7 +35,7 @@ class Food(Item):
         self.closed_img = pg.image.load("assets/cardbox.png").convert_alpha()
         self.opened_img = pg.image.load("assets/" + name + ".png").convert_alpha()
 
-    def display(self, screen):
+    def display(self, screen: pg.display) -> None:
         """
 
         Display Food on screen according to its state
@@ -46,7 +49,7 @@ class Food(Item):
             screen.blit(self.opened_img, (self.coordinates[0] + 16, self.coordinates[1] + 16))
             pg.display.flip()
 
-    def update(self, screen, args=None):
+    def update(self, screen, args: tuple = None) -> None:
         """
 
         Update the food item on the screen

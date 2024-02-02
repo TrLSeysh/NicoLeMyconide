@@ -1,9 +1,40 @@
-import pygame
+"""
+
+Nico's caracteristics and function linked to his behavior
+
+"""
+
 import sys
+import pygame
 
 
 class Nico:
-    def __init__(self, energy, hunger, hygiene, social, isAsleep, emotion, coordinates, size):
+    """
+
+    Nico
+
+    :param energy: float between 0 and 3
+    :param hunger: float between 0 and 3
+    :param hygiene: float between 0 and 3
+    :param social: float between 0 and 3
+    :param isAsleep: bool, check if Nico is sleeping
+    :param emotion: str, Nico's current emotion
+    :param coordinates: coordinates of element
+    :param size: size of element
+
+    """
+
+    def __init__(
+        self,
+        energy: float,
+        hunger: float,
+        hygiene: float,
+        social: float,
+        isAsleep: bool,
+        emotion: str,
+        coordinates: list,
+        size: list,
+    ) -> None:
         self.energy = energy
         self.hunger = hunger
         self.hygiene = hygiene
@@ -20,7 +51,7 @@ class Nico:
                 "assets/nico_" + self.emotion + str(_) + ".png",
             ]
 
-    def live(self):
+    def live(self) -> None:
         """
         slowly decrease needs (energy, hunger, hygiene, social)
         manage the sleep cycle of Nico, set frames depending on his emotion
@@ -67,7 +98,7 @@ class Nico:
         else:
             self.current_frames = frames[self.emotion]
 
-    def feelEmotion(self):
+    def feelEmotion(self) -> str:
         """
         modify emotion depending on needs' fullfilment
         """
@@ -86,7 +117,7 @@ class Nico:
             emotion = "neutral"
         return emotion
 
-    def feed(self, food):
+    def feed(self, food: float) -> bool:
         """
         eat food (add hunger to the bar punctually)
         """
@@ -95,16 +126,16 @@ class Nico:
         if self.emotion == "sad" or self.hunger >= 3 or self.isAsleep:
             print("Nico doesn't / can't want to eat right now.")
             return True
-        elif self.hunger + food > 3:
+        if self.hunger + food > 3:
             self.hunger += food
             print("The food was delicious... But Nico ate a bit too much.")
             return False
-        else:
-            self.hunger += food
-            print("Nico enjoyed his little snack !")
-            return False
 
-    def clean(self):
+        self.hunger += food
+        print("Nico enjoyed his little snack !")
+        return False
+
+    def clean(self) -> bool:
         """
         clean (add hygiene to the bar punctually)
         """
@@ -112,12 +143,12 @@ class Nico:
         if self.emotion == "angry" or self.isAsleep:
             print("Nico doesn't want to take a bath right now.")
             return True
-        else:
-            self.hygiene = 3
-            print("Nico is all-clean now !")
-            return False
 
-    def pet(self):
+        self.hygiene = 3
+        print("Nico is all-clean now !")
+        return False
+
+    def pet(self) -> bool:
         """
         pet (add social to the bar punctually)
         """
@@ -128,11 +159,17 @@ class Nico:
                 self.isAsleep = False
             print("Nico doesn't want to be petted right now.")
             return True
-        else:
-            self.social = self.social + 0.05 if self.social + 0.05 < 3 else 3
-            return False
 
-    def update(self, screen, frame) -> None:
+        self.social = self.social + 0.05 if self.social + 0.05 < 3 else 3
+        return False
+
+    def update(self, screen: pygame.display, frame: int) -> None:
+        """
+        Update Nico's sprite.
+
+        :param screen: the pygame.screen element for the game
+        :param frame: the subframe of Nico's image
+        """
         frame_surface = pygame.image.load(self.current_frames[frame[0]])
 
         screen.blit(frame_surface, self.coordinates)
@@ -140,9 +177,14 @@ class Nico:
 
 
 def main():
+    """
+
+    UNUSED : debug main function to checked Nico's behavior before screen was completed.
+
+    """
     pygame.init()
 
-    nico = Nico(3, 3, 3, 3, False, "happy", [150, 150])
+    nico = Nico(3, 3, 3, 3, False, "happy", [150, 150], [128, 128])
 
     clock = pygame.time.Clock()
     fps = 60
