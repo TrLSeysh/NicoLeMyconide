@@ -1,8 +1,18 @@
-from src.game import Game
+"""
+
+Main function
+
+"""
 import pygame
+from src.game import Game
 
 
 def main():
+    """
+
+    Prenez bien soin de Nico, la petite pousse miconide
+
+    """
     game = Game()
     game.update_screen()
     running = True
