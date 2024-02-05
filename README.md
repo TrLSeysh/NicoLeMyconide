@@ -27,7 +27,7 @@ Occupez-vous de Nico avec plusieurs activités :
 
 ## Les assets
 
-> *L'intégralité des textures de type pixel art ont été faites par nos soins. Les seules choses qui ont été récupérées sont les sons et la musique*
+> *L'intégralité des textures de type pixel art ont été faites par nos soins.*
 
 **Personnage & Fonds :** Océane Cras
 
