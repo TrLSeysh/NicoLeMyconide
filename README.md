@@ -23,7 +23,7 @@ Occupez-vous de Nico avec plusieurs activités :
 #### **Coeur | Le carresser :** 
 >Ce petit champignon a besoin de tendresse. Cliquer sur le bouton changera votre curseur pour vous permettre de le carresser (attention à ne pas le faire quand il dort !). Pour arrêter cliquez sur la croix en bas à droite.
 
-*PS : La fonction pour charger une partie est encore en cours d'implémentation.*
+*PS : La fonction pour charger une partie, les musiques et sons et d'autres améliorations de gameplay sont encore en cours d'implémentation.*
 
 ## Les assets
 
